@@ -62,10 +62,20 @@ class TVAE(nn.Module) :
         # nll -= (np.log(np.pi) + lognu) / 2
         # nll += loglambda / 2
         # nll -= (torch.exp(lognu) + 1) * torch.log(1 + (torch.exp(loglambda) * (x - mu_theta).pow(2) / torch.exp(lognu))) / 2
-        nll = 2 * (torch.lgamma((torch.exp(lognu) + 1) / 2) - torch.lgamma(torch.exp(lognu) / 2))
-        nll -= np.log(np.pi) + lognu
-        nll += loglambda
-        nll -= (torch.exp(lognu) + 1) * torch.log(1 + (torch.exp(loglambda) * (x - mu_theta).pow(2) / torch.exp(lognu)))
+        
+        # univariate loss
+        # nll = 2 * (torch.lgamma((torch.exp(lognu) + 1) / 2) - torch.lgamma(torch.exp(lognu) / 2))
+        # nll -= np.log(np.pi) + lognu
+        # nll += loglambda
+        # nll -= (torch.exp(lognu) + 1) * torch.log(1 + (torch.exp(loglambda) * (x - mu_theta).pow(2) / torch.exp(lognu)))
+        
+        # multivariate loss
+        p = mu_theta.size(-1)
+        nll = 2 * (torch.lgamma((torch.exp(lognu) + p) / 2) - torch.lgamma(torch.exp(lognu) / 2))
+        nll -= p * (np.log(np.pi) + lognu)
+        nll += p * loglambda
+        nll -= (torch.exp(lognu) + p) * torch.log(1 + (torch.exp(loglambda) * (x - mu_theta).pow(2) / torch.exp(lognu)))
+        
         return torch.mean(torch.sum(-1 * nll, dim=1))
 
     def reg_loss(self, mu, logvar) : 

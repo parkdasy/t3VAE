@@ -130,21 +130,21 @@ bivariate_simulation(
     exp_number=2
 )
 
-make_reproducibility(args.model_init_seed)
-model_list=[
-    betaVAE.betaVAE(n_dim, m_dim, recon_sigma=args.recon_sigma, reg_weight=0.1, device=device).to(device), 
-    betaVAE.betaVAE(n_dim, m_dim, recon_sigma=args.recon_sigma, reg_weight=0.2, device=device).to(device), 
-    betaVAE.betaVAE(n_dim, m_dim, recon_sigma=args.recon_sigma, reg_weight=0.5, device=device).to(device), 
-    VAE.VAE(n_dim, m_dim, recon_sigma=args.recon_sigma, device=device).to(device),  
-]
+# make_reproducibility(args.model_init_seed)
+# model_list=[
+#     betaVAE.betaVAE(n_dim, m_dim, recon_sigma=args.recon_sigma, reg_weight=0.1, device=device).to(device), 
+#     betaVAE.betaVAE(n_dim, m_dim, recon_sigma=args.recon_sigma, reg_weight=0.2, device=device).to(device), 
+#     betaVAE.betaVAE(n_dim, m_dim, recon_sigma=args.recon_sigma, reg_weight=0.5, device=device).to(device), 
+#     VAE.VAE(n_dim, m_dim, recon_sigma=args.recon_sigma, device=device).to(device),  
+# ]
 
-bivariate_simulation(
-    model_list, [model.model_name for model in model_list], 
-    K, args.train_N, args.val_N, args.test_N, ratio_list,
-    sample_nu_list, sample_mu_list, sample_var_list, 
-    dirname, device, -args.xmin, args.xmax, -args.ymin, args.ymax, args.bins,
-    args.epochs, args.batch_size, args.lr, args.eps, args.weight_decay, 
-    args.train_data_seed, args.validation_data_seed, args.test_data_seed, 
-    bootstrap_iter=args.boot_iter, gen_N=args.gen_N, MMD_test_N=args.MMD_test_N, patience=args.patience, 
-    exp_number=3
-)
+# bivariate_simulation(
+#     model_list, [model.model_name for model in model_list], 
+#     K, args.train_N, args.val_N, args.test_N, ratio_list,
+#     sample_nu_list, sample_mu_list, sample_var_list, 
+#     dirname, device, -args.xmin, args.xmax, -args.ymin, args.ymax, args.bins,
+#     args.epochs, args.batch_size, args.lr, args.eps, args.weight_decay, 
+#     args.train_data_seed, args.validation_data_seed, args.test_data_seed, 
+#     bootstrap_iter=args.boot_iter, gen_N=args.gen_N, MMD_test_N=args.MMD_test_N, patience=args.patience, 
+#     exp_number=3
+# )

@@ -97,7 +97,7 @@ class VAE_st(nn.Module) :
         chi_dist = torch.distributions.chi2.Chi2(torch.tensor([nu]))
         v = chi_dist.sample(sample_shape=torch.tensor([N])).to(self.device)
 
-        prior*= torch.sqrt(v / self.nu)
+        prior*= torch.sqrt(self.nu/v)
 
         return self.decoder_sampling(prior)
     
