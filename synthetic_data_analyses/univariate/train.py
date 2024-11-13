@@ -17,7 +17,8 @@ from torch.utils.tensorboard import SummaryWriter
 from mmd import make_masking, mmd_linear, mmd_linear_bootstrap_test
 from loss import log_t_normalizing_const, gamma_regularizer
 from util import make_result_dir, make_reproducibility, TensorDataset
-from univariate.sampling import t_sampling, sample_generation, t_density, t_density_contour
+# from univariate.sampling import t_sampling, sample_generation, t_density, t_density_contour
+from univariate.sampling_new import par_sampling, sample_generation, par_density, par_density_contour
 from univariate.visualize import visualize_density
 
 def univariate_simulation(

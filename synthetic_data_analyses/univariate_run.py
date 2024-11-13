@@ -47,9 +47,9 @@ parser.add_argument('--K',              type=int,   default=2,      help="Number
 parser.add_argument('--train_N',        type=int,   default=200000, help="Number of sample size of train data")
 parser.add_argument('--val_N',          type=int,   default=200000, help="Number of sample size of train data")
 parser.add_argument('--test_N',         type=int,   default=500000, help="Number of sample size of train data")
-parser.add_argument('--sample_nu_list', nargs='+',  type=float,     default=[5.0, 5.0],     help='Degree of freedom from each cluster')
+parser.add_argument('--sample_nu_list', nargs='+',  type=float,     default=[1.0, 2.0],     help='Degree of freedom from each cluster')
 parser.add_argument('--ratio_list',     nargs='+',  type=float,     default=[0.6, 0.4],     help='Mixture density of each cluster')
-parser.add_argument('--mu_list',        nargs='+',  type=float,     default=[-2.0, 2.0],    help="Mean parameter for each cluster")
+parser.add_argument('--mu_list',        nargs='+',  type=float,     default=[1.5, 5.0],    help="Mean parameter for each cluster")
 parser.add_argument('--var_list',       nargs='+',  type=float,     default=[1.0, 1.0],     help="Dispersion parameter for each cluster")
 
 parser.add_argument('--boot_iter',      type=int,   default=999,    help="Number of iterations in bootstrap MMD test")
