@@ -18,7 +18,8 @@ from mmd import make_masking, mmd_linear, mmd_linear_bootstrap_test
 from loss import log_t_normalizing_const, gamma_regularizer
 from util import make_result_dir, make_reproducibility, TensorDataset
 # from univariate.sampling import t_sampling, sample_generation, t_density, t_density_contour
-from univariate.sampling_new import par_sampling, sample_generation, par_density, par_density_contour
+# from univariate.sampling_new import par_sampling, sample_generation, par_density, par_density_contour
+from univariate.sampling_lognor import sample_generation
 from univariate.visualize import visualize_density
 
 def univariate_simulation(
@@ -52,6 +53,12 @@ def univariate_simulation(
         device, SEED=test_data_seed,
         K=K, N=test_N, ratio_list = ratio_list, mu_list=sample_mu_list, var_list=sample_var_list, nu_list=sample_nu_list
     )
+
+    
+    central_mu = 0 # min(sample_mu_list).to(device)
+    train_data = torch.log(train_data-central_mu)
+    validation_data = torch.log(validation_data-central_mu)
+    test_data = torch.log(test_data-central_mu)
 
     train_dataset = TensorDataset(train_data)
 

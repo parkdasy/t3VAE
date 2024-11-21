@@ -15,7 +15,7 @@ parser.add_argument('--dirname',        type=str,   default='results', help='Nam
 parser.add_argument('--boot_seed',      type=int,   default=10,     help="Random seed for bootstrap MMD test")
 parser.add_argument('--boot_iter',      type=int,   default=999,    help="Number of iterations in bootstrap MMD test")
 parser.add_argument('--MMD_test_N',     type=int,   default=100000, help="Number of generations")
-parser.add_argument('--tail_cut',       type=float, default=6.0,    help="Tail criterion")
+parser.add_argument('--tail_cut',       type=float, default=3.0,    help="Tail criterion")
 
 args = parser.parse_args()
 
