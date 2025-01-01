@@ -29,16 +29,26 @@ def make_result_dir(dirname):
     os.makedirs(dirname + '/generations', exist_ok=True)
 
 ## from sampling
-def sample_generation (device, SEED = None, ratio = 0.5) : 
+def sample_generation (device, SEED = None, ratio1 = 0.6, ratio2 = 0.2, ratio3 = 0.2) : 
     np.random.seed(SEED)
 
     spy = fdr.DataReader('SPY', start='2014-01-01', end='2024-01-01')
-    close_pct_change = spy['Close'].pct_change().to_numpy()
-    n = int(ratio * len(close_pct_change))
-    data = np.random.choice(close_pct_change, size = n, replace = False)
-    data = torch.tensor(data, dtype=torch.float32)
+    close_pct_change = spy['Close'].pct_change().to_numpy()[1:]
+    n = len(close_pct_change)
+    n1 = int(ratio1 * n)
+    n2 = int(ratio2 * n)
+    n3 = int(ratio3 * n)
 
-    return data.to(device)
+    idx = np.random.permutation(n)
+    data1 = close_pct_change[idx[:n1]]
+    data2 = close_pct_change[idx[n1:n1+n2]]
+    data3 = close_pct_change[idx[n1+n2:n1+n2+n3]]
+
+    data1 = torch.tensor(data1, dtype=torch.float32).to(device).unsqueeze(dim=1)
+    data2 = torch.tensor(data2, dtype=torch.float32).to(device).unsqueeze(dim=1)
+    data3 = torch.tensor(data3, dtype=torch.float32).to(device).unsqueeze(dim=1)
+
+    return data1, data2, data3
 
 ## from visualize
 def visualize_density(model_title_list, model_gen_list, xlim) :
@@ -53,9 +63,9 @@ def visualize_density(model_title_list, model_gen_list, xlim) :
 
     for m in range(M) : 
         ax = fig.add_subplot(2,M,m+1)
-        plt.hist(close_pct_change, bins = 100, range = [-10, 10], density=True, alpha = 0.5, color='orange')
-        plt.hist(model_gen_list[m], bins = 100, range = [-10, 10], density=True, alpha = 0.5, color='dodgerblue')
-        plt.xlim(-10, 10)
+        plt.hist(close_pct_change, bins = 100, range = [-0.2, 0.2], density=True, alpha = 0.5, color='orange')
+        plt.hist(model_gen_list[m], bins = 100, range = [-0.2, 0.2], density=True, alpha = 0.5, color='dodgerblue')
+        plt.xlim(-0.2, 0.2)
         plt.title(f'{model_title_list[m]}')
 
         ax = fig.add_subplot(2,M,M+m+1)
@@ -92,14 +102,8 @@ def simulation(
     model_writer_list = [SummaryWriter(dirname + f'/{title}') for title in model_title_list]
 
     # Generate dataset
-    train_data = sample_generation(
-        device, SEED=train_data_seed, ratio = train_ratio
-    )
-    validation_data = sample_generation(
-        device, SEED=validation_data_seed, ratio = val_ratio
-    )
-    test_data = sample_generation(
-        device, SEED=test_data_seed, ratio = test_ratio
+    train_data, validation_data, test_data = sample_generation(
+        device, SEED=train_data_seed, ratio1 = train_ratio, ratio2 = val_ratio, ratio3 = test_ratio
     )
 
     train_dataset = TensorDataset(train_data)

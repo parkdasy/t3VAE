@@ -43,7 +43,7 @@ parser.add_argument('--test_ratio',         type=int,   default=0.15, help="Rati
 parser.add_argument('--boot_iter',      type=int,   default=999,    help="Number of iterations in bootstrap MMD test")
 parser.add_argument('--gen_N',          type=int,   default=500000, help="Number of generations")
 parser.add_argument('--MMD_test_N',     type=int,   default=100000, help="Number of generations")
-parser.add_argument('--xlim',           type=float, default=15.0,   help="Maximum value of x-axis in log-scale plot")
+parser.add_argument('--xlim',           type=float, default=0.2,   help="Maximum value of x-axis in log-scale plot")
 parser.add_argument('--patience',       type=int,   default=15,     help="Patience for Early stopping")
 
 args = parser.parse_args()
